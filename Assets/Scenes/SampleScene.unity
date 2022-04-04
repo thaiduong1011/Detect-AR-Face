@@ -709,19 +709,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866518007}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afaac1eedd152ef47be997500b5fff71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExpresionConfigurations: []
-  FORMAT_DEBUG_TEXT: ({0}){1}(min={2} max={3}) -> val={4}
-  delayFor: 1
-  meshFilter: {fileID: 0}
-  faceParent: {fileID: 147946449}
+  ExpresionConfigurations:
+  - {fileID: 11400000, guid: 09d518761a525c14fb6558b55dc4780a, type: 2}
   infoText: {fileID: 1484647558}
-  cameraManager: {fileID: 490345423}
-  faceManager: {fileID: 147946452}
 --- !u!4 &1866518009
 Transform:
   m_ObjectHideFlags: 0

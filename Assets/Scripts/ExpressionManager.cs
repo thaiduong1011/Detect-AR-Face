@@ -7,54 +7,16 @@ using UnityEngine.XR.ARFoundation;
 public class ExpressionManager : MonoBehaviour
 {
     public ExpressionConfiguration[] ExpresionConfigurations;
-
-    public string FORMAT_DEBUG_TEXT = "({0}){1}(min={2} max={3}) -> val={4}";
-
-    private Dictionary<string, float> currentBlendShapes;
-    private Dictionary<string, Text> currentBlendShapeUIs;
-
-    public float delayFor = 1.0f;
-    private float delayTimer = 0;
-
-    [SerializeField]
-    private MeshFilter meshFilter;
     private Mesh faceMesh;
 
     [SerializeField]
-    private GameObject faceParent;
-    private ARFace face;
-    private ARAnchor anchor;
-    [SerializeField]
     private Text infoText;
+    private ARFace face;
 
-    [SerializeField]
-    private ARCameraManager cameraManager;
-    [SerializeField]
-    private ARFaceManager faceManager;
-
-    // Start is called before the first frame update
-
-    // Update is called once per frame
     void Update()
     {
-        if(delayTimer >= delayFor){
-            DetectExpressions();
-            delayTimer = 0;
-        }
-        else {
-            delayTimer += Time.deltaTime * 1.0f;
-        }
-    }
-
-    void CleanUp()
-    {
-        foreach (var configuration in ExpresionConfigurations)
-        {
-            foreach (var range in configuration.BlendShapeRanges)
-            {
-                range.DetectionCount = 0;
-            }
-        }
+        Init();
+        DetectExpressions();
     }
 
     void CreateDebugOverlays(string text)
@@ -64,22 +26,47 @@ public class ExpressionManager : MonoBehaviour
 
     void DetectExpressions()
     {
-        face = faceParent.GetComponentInChildren<ARFace>();
+        if (faceMesh == null) return;
+
+        foreach (var expression in  ExpresionConfigurations)
+        {
+            var count = 0;
+            string text = "";
+            // foreach (var range in  expression.BlendShapeRanges)
+            // {
+            //     var point = faceMesh.vertices[range.point];
+            //     if (point.x <= range.UpperBound.x && point.x >= range.LowBound.x 
+            //     && point.y <= range.UpperBound.y && point.y >= range.LowBound.y 
+            //     && point.z <= range.UpperBound.z && point.z >= range.LowBound.z)
+            //     {
+            //         count++;
+            //     }
+            //     text = point.ToString();
+            // }
+
+            if (count == expression.BlendShapeRanges.Length)
+            {
+                CreateDebugOverlays("Smile_" + text);
+
+            }
+            else
+            {
+                CreateDebugOverlays("null_" + text);
+
+            }
+        }
+    }
+
+    void Init()
+    {
         if (face == null)
         {
-            face = GameObject.Find("AR Default Face")?.GetComponent<ARFace>();
-        }
-
-        string text = cameraManager.currentFacingDirection.ToString();
-        text += "__" + faceManager.currentMaximumFaceCount;
-        if (face)
-        {
-            CreateDebugOverlays(text +"__"+ face.fixationPoint.ToString());
-
-        }
-        else
-        {
-            CreateDebugOverlays(text + "__ null");
+            var meshFilterTranform = GameObject.Find("AR Session Origin/Trackables");
+            if (meshFilterTranform)
+            {
+                face = meshFilterTranform.GetComponentInChildren<ARFace>();
+                faceMesh = meshFilterTranform.GetComponentInChildren<MeshFilter>().mesh;
+            }
         }
     }
 

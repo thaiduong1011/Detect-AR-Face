@@ -16,14 +16,6 @@ public class Face : MonoBehaviour
     void Start()
     {
         infoText = GameObject.Find("Canvas/Text").GetComponent<Text>();
-      //  bonesContainer = GameObject.Find("Bones");
-      //  var node = bonesContainer.transform.GetChild(0);
-        // for (var i = 0; i < 18; i++)
-        // {
-        //     var newNode = Instantiate(node, new Vector3(0, 0, 0), Quaternion.identity);
-        //     newNode.parent = bonesContainer.transform;
-        // }
-
        mesh = GetComponent<MeshFilter>().mesh;
        face = GetComponent<ARFace>();
     }
@@ -43,8 +35,9 @@ public class Face : MonoBehaviour
             {
                 rotation = "left";
             }
+            rotation +=  gameObject.transform.name + "+" + gameObject.transform.parent.name + "+" + gameObject.transform.parent.parent.name+ "++"; 
             //Trackables_AR  ---- Session Origin
-            if (mesh.vertices[14].y <-0.07&& mesh.vertices[14].y<-0.07)
+            if (mesh.vertices[14].y <-0.07&& mesh.vertices[15].y<-0.07)
             {
                 infoText.text = "is open mouth_" + rotation;
             }
@@ -52,6 +45,7 @@ public class Face : MonoBehaviour
             {
                 infoText.text = "null_" + rotation;
             }
+
         }           
     }
 }
