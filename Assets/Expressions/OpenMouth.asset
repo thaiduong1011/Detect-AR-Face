@@ -15,13 +15,13 @@ MonoBehaviour:
   ExpresionName: OpenMouth
   BlendShapeRanges:
   - point: 14
-    LowBound: {x: 0, y: -1, z: 0}
+    LowBound: {x: -1, y: -1, z: -1}
     UpperBound: {x: 0, y: -0.07, z: 0}
     Action:
       MethodName: 
       Delay: 0
   - point: 15
-    LowBound: {x: 0, y: -1, z: 0}
+    LowBound: {x: -1, y: -1, z: -1}
     UpperBound: {x: 0, y: -0.07, z: 0}
     Action:
       MethodName: 

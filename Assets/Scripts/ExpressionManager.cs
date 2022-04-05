@@ -7,7 +7,7 @@ using UnityEngine.XR.ARFoundation;
 public class ExpressionManager : MonoBehaviour
 {
     public ExpressionConfiguration[] ExpresionConfigurations;
-    private Mesh faceMesh;
+    private MeshFilter faceMeshFilter;
 
     [SerializeField]
     private Text infoText;
@@ -26,27 +26,27 @@ public class ExpressionManager : MonoBehaviour
 
     void DetectExpressions()
     {
-        if (faceMesh == null) return;
+        if (faceMeshFilter == null || faceMeshFilter.mesh.vertexCount == 0) return;
+
 
         foreach (var expression in  ExpresionConfigurations)
         {
             var count = 0;
             string text = "";
-            // foreach (var range in  expression.BlendShapeRanges)
-            // {
-            //     var point = faceMesh.vertices[range.point];
-            //     if (point.x <= range.UpperBound.x && point.x >= range.LowBound.x 
-            //     && point.y <= range.UpperBound.y && point.y >= range.LowBound.y 
-            //     && point.z <= range.UpperBound.z && point.z >= range.LowBound.z)
-            //     {
-            //         count++;
-            //     }
-            //     text = point.ToString();
-            // }
+            foreach (var range in  expression.BlendShapeRanges)
+            {
+                var point = faceMeshFilter.mesh.vertices[range.point];
+                if (point.x <= range.UpperBound.x && point.x >= range.LowBound.x 
+                && point.y <= range.UpperBound.y && point.y >= range.LowBound.y 
+                && point.z <= range.UpperBound.z && point.z >= range.LowBound.z)
+                {
+                    count++;
+                }
+            }
 
             if (count == expression.BlendShapeRanges.Length)
             {
-                CreateDebugOverlays("Smile_" + text);
+                CreateDebugOverlays("OpenMouth_" + text);
 
             }
             else
@@ -65,7 +65,7 @@ public class ExpressionManager : MonoBehaviour
             if (meshFilterTranform)
             {
                 face = meshFilterTranform.GetComponentInChildren<ARFace>();
-                faceMesh = meshFilterTranform.GetComponentInChildren<MeshFilter>().mesh;
+                faceMeshFilter = meshFilterTranform.GetComponentInChildren<MeshFilter>();
             }
         }
     }
